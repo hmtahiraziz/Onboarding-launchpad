@@ -1,0 +1,166 @@
+# Paramount Launchpad - Cursor AI Rules
+
+## Project Overview
+Paramount Launchpad is an AI-powered liquor wholesale onboarding system that transforms the overwhelming 19,000-product catalog into a personalized experience for new customers. The system addresses the critical problem where 30% of new customers never place their first order due to catalog complexity.
+
+## Architecture
+- **Backend**: Node.js + TypeScript + Express with Clean Architecture
+- **Frontend**: React.js + TypeScript + Vite with Clean Architecture
+- **Database**: MongoDB with Mongoose
+- **Styling**: Tailwind CSS
+- **State Management**: React hooks (can be extended with Zustand)
+
+## Project Structure
+```
+hackton-visualr/
+├── backend/                 # Node.js backend
+│   ├── src/
+│   │   ├── domain/         # Business entities & interfaces
+│   │   ├── application/    # Use cases & business logic
+│   │   ├── infrastructure/ # Database & API implementation
+│   │   └── shared/         # Utilities & middleware
+├── frontend/               # React.js frontend
+│   ├── src/
+│   │   ├── domain/         # Business entities & interfaces
+│   │   ├── data/          # API clients & repositories
+│   │   ├── presentation/  # React components & pages
+│   │   └── shared/        # Utilities
+└── README.md              # Project overview
+```
+
+## Key Features
+1. **AI-Powered Onboarding Wizard**: 6-step questionnaire with dynamic questions
+2. **Customer Segmentation**: Automatic categorization based on venue type and preferences
+3. **Product Template Generation**: Curated ~100 products from 19,000+ catalog
+4. **Platinum Supplier Prioritization**: Platinum suppliers get top billing
+5. **New Customer Deals**: Special promotions and offers
+6. **Responsive Demo UI**: Complete visual demo flow for presentation
+
+## Business Impact
+- **Problem**: 30% of new customers never place first order
+- **Solution**: Personalized onboarding reduces 19,000 products to ~100 curated ones
+- **Result**: Conversion improvement from 70% to 85%+
+- **Benefit**: Every customer tier gets personalized attention
+
+## Code Standards
+- **TypeScript**: Strict mode, no `any` types, explicit return types
+- **Clean Architecture**: Domain, Application, Infrastructure layers
+- **SOLID Principles**: Single responsibility, dependency inversion
+- **Naming**: camelCase for variables, PascalCase for components
+- **Error Handling**: CustomError class, proper HTTP status codes
+- **Validation**: Joi schemas for input validation
+
+## Key Entities
+- **Customer**: Business information, venue type, tier (Bronze/Silver/Gold/Platinum)
+- **Product**: 19,000+ products with supplier tiers and pricing
+- **OnboardingSession**: Multi-step questionnaire with progress tracking
+- **CustomerSegment**: Automatic categorization (Fine Dining, Casual Bar, Hotel, Cafe)
+- **ProductTemplate**: Curated product sets based on customer segment
+
+## API Endpoints
+- **Customers**: `/api/customers` (CRUD operations)
+- **Onboarding**: `/api/onboarding` (wizard flow)
+- **Products**: `/api/products` (search, recommendations, trending)
+- **Health**: `/health` (system status)
+
+## Development Guidelines
+- **Backend**: Use repository pattern, dependency injection, clean architecture
+- **Frontend**: Functional components, hooks, proper TypeScript interfaces
+- **Database**: MongoDB with proper indexing and validation
+- **Testing**: Unit tests for business logic, integration tests for APIs
+- **Security**: JWT authentication, input validation, environment variables
+
+## Demo Flow
+1. **Registration**: Customer signup with business details
+2. **Onboarding**: 6-step wizard with progress tracking
+3. **Segmentation**: Automatic customer categorization
+4. **Product Template**: Curated products with platinum prioritization
+5. **Completion**: Summary and next steps
+
+## Common Patterns
+- **Repository Pattern**: Abstract data access with interfaces
+- **Use Case Pattern**: Encapsulate business operations
+- **Dependency Injection**: Inject dependencies through constructors
+- **Error Boundaries**: React error handling for UI
+- **Form Management**: React Hook Form for form handling
+
+## File Naming
+- **Components**: PascalCase.tsx (e.g., CustomerCard.tsx)
+- **Hooks**: useCamelCase.ts (e.g., useCustomer.ts)
+- **Utilities**: camelCase.ts (e.g., apiClient.ts)
+- **Types**: PascalCase.ts (e.g., Customer.ts)
+- **Interfaces**: IPascalCase.ts (e.g., ICustomerRepository.ts)
+
+## Environment Variables
+- **Backend**: PORT, MONGODB_URI, JWT_SECRET, NODE_ENV
+- **Frontend**: VITE_API_URL, VITE_APP_NAME
+- **Never commit**: .env files, secrets, API keys
+
+## Git Workflow
+- **Branches**: feature/, bugfix/, hotfix/, release/
+- **Commits**: Conventional commits (feat:, fix:, docs:, etc.)
+- **Review**: All code must be reviewed before merge
+- **CI/CD**: Automated testing and deployment
+
+## Performance
+- **Backend**: Database indexing, connection pooling, caching
+- **Frontend**: Lazy loading, React.memo, bundle optimization
+- **Database**: Proper queries, pagination, aggregation
+
+## Security
+- **Authentication**: JWT tokens with expiration
+- **Authorization**: Role-based access control
+- **Validation**: Input sanitization and validation
+- **Secrets**: Environment variables, no hardcoded secrets
+
+## Testing
+- **Unit Tests**: Business logic and utilities
+- **Integration Tests**: API endpoints and database
+- **Component Tests**: React components
+- **E2E Tests**: Complete user flows
+
+## Documentation
+- **README**: Project overview and setup
+- **API Docs**: Endpoint documentation
+- **Code Comments**: JSDoc for public APIs
+- **Architecture**: Clean architecture diagrams
+
+## Common Issues
+- **TypeScript Errors**: Use proper typing, avoid `any`
+- **Architecture Violations**: Follow clean architecture layers
+- **Performance**: Optimize database queries and React renders
+- **Security**: Validate inputs, protect secrets
+- **Testing**: Write tests for new features
+
+## Quick Commands
+```bash
+# Backend
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run test         # Run tests
+npm run lint         # Run linting
+
+# Frontend
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run preview      # Preview production build
+npm run lint         # Run linting
+```
+
+## Team Context
+This is a hackathon project for Paramount Liquor to solve customer onboarding challenges. The system uses AI to personalize the product selection process, reducing customer abandonment and improving conversion rates. The codebase follows clean architecture principles and is designed to be maintainable and scalable.
+
+## AI Assistant Guidelines
+When helping with this project:
+1. **Follow Clean Architecture**: Maintain layer separation
+2. **Use TypeScript**: Provide proper typing and interfaces
+3. **Implement SOLID**: Single responsibility, dependency inversion
+4. **Consider Performance**: Optimize for scale and speed
+5. **Maintain Security**: Validate inputs, protect data
+6. **Write Tests**: Include unit and integration tests
+7. **Document Code**: Add JSDoc comments for public APIs
+8. **Follow Patterns**: Use established patterns and conventions
+9. **Consider UX**: Think about user experience and accessibility
+10. **Plan for Scale**: Design for future growth and maintenance
+
+Remember: This is a production-ready system that needs to handle real customers and business requirements. Always consider the business impact and user experience when making recommendations.
