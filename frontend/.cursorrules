@@ -1,0 +1,271 @@
+# Paramount Launchpad Frontend - Cursor AI Rules
+
+## Frontend Overview
+React.js + TypeScript + Vite frontend following Clean Architecture principles. Provides AI-powered onboarding wizard, customer segmentation, and product template display for the Paramount Launchpad system.
+
+## Architecture Layers
+- **Presentation**: React components, pages, and UI elements
+- **Domain**: Business entities and repository interfaces
+- **Data**: API clients and repository implementations
+- **Shared**: Utilities and common functions
+
+## Key Features
+1. **Customer Registration**: Business signup with venue details
+2. **Enhanced Onboarding Wizard**: 6-step questionnaire with progress tracking
+3. **Customer Segmentation**: Automatic categorization based on responses
+4. **Product Template Display**: Curated products with platinum prioritization
+5. **New Customer Deals**: Special promotions and offers
+6. **Responsive Demo UI**: Complete visual demo flow
+
+## Key Entities
+- **Customer**: Business information, venue type, tier, preferences
+- **Product**: Product catalog with supplier tiers and pricing
+- **OnboardingSession**: Multi-step questionnaire with responses
+- **CustomerSegment**: Automatic categorization logic
+- **OnboardingQuestion**: Dynamic question types and validation
+
+## Component Structure
+```
+src/presentation/
+├── components/
+│   ├── ui/              # Basic UI components (Button, Input, Card)
+│   ├── customer/        # Customer-related components
+│   ├── onboarding/      # Onboarding wizard components
+│   └── product/         # Product display components
+├── pages/              # Page components
+└── App.tsx             # Main app component
+```
+
+## Key Components
+- **CustomerRegistration**: Business signup form
+- **EnhancedOnboardingWizard**: Multi-step questionnaire
+- **ProductTemplateDisplay**: Curated product showcase
+- **ProductCard**: Individual product display
+- **DemoPage**: Complete demo flow
+
+## State Management
+- **Local State**: useState for component state
+- **Form State**: React Hook Form for form management
+- **Server State**: Axios for API communication
+- **Global State**: Context or Zustand (extensible)
+
+## Styling
+- **Tailwind CSS**: Utility-first CSS framework
+- **Custom Design System**: Consistent colors and spacing
+- **Responsive Design**: Mobile-first approach
+- **Component Variants**: Button, Input, Card variants
+
+## API Integration
+- **API Client**: Centralized HTTP client with interceptors
+- **Repositories**: Abstract data access layer
+- **Type Safety**: Full TypeScript integration
+- **Error Handling**: Proper error boundaries and handling
+
+## File Structure
+```
+src/
+├── domain/
+│   ├── entities/        # Customer, Product, OnboardingSession
+│   └── repositories/    # ICustomerRepository, IProductRepository
+├── data/
+│   ├── api/            # API client and configuration
+│   └── repositories/   # Repository implementations
+├── presentation/
+│   ├── components/     # React components
+│   └── pages/         # Page components
+└── shared/            # Utilities and common functions
+```
+
+## Code Standards
+- **TypeScript**: Strict mode, no `any` types, explicit interfaces
+- **React**: Functional components with hooks
+- **Props**: Proper TypeScript interfaces for all props
+- **Error Boundaries**: Implement error boundaries for error handling
+- **Performance**: Use React.memo for expensive components
+
+## Common Patterns
+```typescript
+// Component with Props Interface
+interface ComponentProps {
+  data: SomeType;
+  onAction: (id: string) => void;
+}
+
+export const Component: React.FC<ComponentProps> = ({
+  data,
+  onAction
+}) => {
+  // Component implementation
+};
+
+// Custom Hook
+const useCustomHook = (dependency: string) => {
+  const [state, setState] = useState<StateType>(initialState);
+  
+  useEffect(() => {
+    // Effect logic
+  }, [dependency]);
+  
+  return { state, setState };
+};
+```
+
+## Form Management
+```typescript
+// React Hook Form
+const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
+
+const onSubmit = (data: FormData) => {
+  // Handle form submission
+};
+
+// Form with validation
+<Input
+  label="Email"
+  {...register('email', { 
+    required: 'Email is required',
+    pattern: {
+      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+      message: 'Invalid email address'
+    }
+  })}
+  error={errors.email?.message}
+/>
+```
+
+## API Integration
+```typescript
+// Repository Pattern
+class CustomerRepository implements ICustomerRepository {
+  async createCustomer(request: CreateCustomerRequest): Promise<Customer> {
+    const response = await apiClient.post<Customer>('/customers', request);
+    if (!response.success || !response.data) {
+      throw new Error(response.error || 'Failed to create customer');
+    }
+    return response.data;
+  }
+}
+
+// API Client Usage
+const apiClient = new ApiClient();
+const response = await apiClient.get<Customer[]>('/customers');
+```
+
+## Styling Patterns
+```typescript
+// Tailwind CSS with clsx
+import { clsx } from 'clsx';
+
+const buttonClasses = clsx(
+  'px-4 py-2 rounded-lg font-medium transition-colors',
+  variant === 'primary' ? 'bg-primary-600 text-white' : 'bg-secondary-100',
+  disabled && 'opacity-50 cursor-not-allowed'
+);
+```
+
+## Error Handling
+```typescript
+// Error Boundary
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+  
+  render() {
+    if (this.state.hasError) {
+      return <ErrorFallback />;
+    }
+    return this.props.children;
+  }
+}
+
+// API Error Handling
+try {
+  const data = await apiClient.get('/endpoint');
+  return data;
+} catch (error) {
+  if (error instanceof CustomError) {
+    throw error;
+  }
+  throw new CustomError('API request failed', 500);
+}
+```
+
+## Performance Optimization
+```typescript
+// React.memo for expensive components
+export const ExpensiveComponent = React.memo<Props>(({ data }) => {
+  return <div>{/* Component content */}</div>;
+});
+
+// useMemo for expensive calculations
+const expensiveValue = useMemo(() => {
+  return computeExpensiveValue(data);
+}, [data]);
+
+// useCallback for stable function references
+const handleClick = useCallback((id: string) => {
+  onItemClick(id);
+}, [onItemClick]);
+```
+
+## Testing Patterns
+```typescript
+// Component Testing
+import { render, screen, fireEvent } from '@testing-library/react';
+
+test('renders customer form', () => {
+  render(<CustomerRegistration onSuccess={jest.fn()} />);
+  expect(screen.getByLabelText(/business name/i)).toBeInTheDocument();
+});
+
+// Hook Testing
+import { renderHook, act } from '@testing-library/react-hooks';
+
+test('useCustomHook updates state', () => {
+  const { result } = renderHook(() => useCustomHook('test'));
+  
+  act(() => {
+    result.current.updateState('new value');
+  });
+  
+  expect(result.current.state).toBe('new value');
+});
+```
+
+## Common Issues
+- **TypeScript Errors**: Use proper typing, avoid `any`
+- **Performance**: Optimize re-renders with React.memo
+- **State Management**: Use appropriate state management patterns
+- **Form Validation**: Implement proper form validation
+- **Error Handling**: Use error boundaries and proper error states
+- **Accessibility**: Ensure proper ARIA labels and keyboard navigation
+
+## Quick Commands
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run preview      # Preview production build
+npm run lint         # Run linting
+npm run lint:fix     # Fix linting issues
+```
+
+## AI Assistant Guidelines
+When helping with frontend development:
+1. **Follow Clean Architecture**: Maintain layer separation
+2. **Use TypeScript**: Provide proper typing and interfaces
+3. **React Best Practices**: Use functional components and hooks
+4. **Performance**: Consider React.memo and optimization
+5. **Accessibility**: Ensure proper ARIA labels and keyboard navigation
+6. **Responsive Design**: Make components work on all screen sizes
+7. **Error Handling**: Implement proper error boundaries
+8. **Form Management**: Use React Hook Form for complex forms
+9. **State Management**: Choose appropriate state management patterns
+10. **Testing**: Write component and hook tests
+
+Remember: This frontend serves real users and must provide an excellent user experience. Always consider usability, accessibility, and performance when making recommendations.
