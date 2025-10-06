@@ -1,0 +1,77 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: launchpad_postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: paramount_launchpad
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - launchpad-network
+
+  # curation:
+  #   build:
+  #     context: ./curation-service
+  #     dockerfile: Dockerfile
+  #   container_name: launchpad_curation
+  #   ports:
+  #     - "8000:8000"
+  #   environment:
+  #     - PRODUCTS_JSON=/app/data/products.json
+  #     - DEFAULT_MAX_PRODUCTS=100
+  #     - TOP_K_PRESELECT=250
+  #     - USE_LLM=false
+  #     - LLM_BASE_URL=http://ollama:11434/v1
+  #     - LLM_API_KEY=ollama
+  #     - LLM_MODEL=llama3.1
+  #     - LLM_TEMPERATURE=0.3
+  #     - LLM_MAX_TOKENS=1800
+  #     - UVICORN_HOST=0.0.0.0
+  #     - UVICORN_PORT=8000
+  #   volumes:
+  #     - ./backend/data/products.json:/app/data/products.json:ro
+  #   depends_on:
+  #     - ollama
+  #   networks:
+  #     - launchpad-network
+  #   restart: unless-stopped
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 40s
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: launchpad_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - launchpad-network
+    restart: unless-stopped
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  postgres_data:
+  ollama_data:
+
+networks:
+  launchpad-network:
+    driver: bridge

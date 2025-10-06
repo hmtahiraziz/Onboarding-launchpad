@@ -1,0 +1,175 @@
+# Paramount Launchpad Backend - Cursor AI Rules
+
+## Backend Overview
+Node.js + TypeScript + Express backend following Clean Architecture principles with SOLID design patterns. Handles customer management, onboarding flow, product catalog, and AI-powered recommendations.
+
+## Architecture Layers
+- **Domain**: Business entities, repository interfaces, service interfaces
+- **Application**: Use cases and business logic implementation
+- **Infrastructure**: Database models, repository implementations, API routes
+- **Shared**: Utilities, middleware, error handling
+
+## Key Entities
+- **Customer**: Business info, venue type, tier, preferences
+- **Product**: 19,000+ products with supplier tiers and pricing
+- **OnboardingSession**: Multi-step questionnaire with responses
+- **CustomerSegment**: Automatic categorization logic
+- **Supplier**: Tier-based supplier management
+
+## Database
+- **MongoDB**: Document-based database with Mongoose ODM
+- **Models**: CustomerModel, ProductModel, OnboardingModel
+- **Indexes**: Email, tier, location, category indexes
+- **Validation**: Mongoose schemas with validation
+
+## API Endpoints
+- **Customers**: `/api/customers` (CRUD operations)
+- **Onboarding**: `/api/onboarding` (wizard flow)
+- **Products**: `/api/products` (search, recommendations)
+- **Health**: `/health` (system status)
+
+## Key Patterns
+- **Repository Pattern**: Abstract data access with interfaces
+- **Use Case Pattern**: Encapsulate business operations
+- **Dependency Injection**: Inject dependencies through constructors
+- **Error Handling**: CustomError class with proper HTTP status codes
+- **Validation**: Joi schemas for input validation
+
+## File Structure
+```
+src/
+├── domain/
+│   ├── entities/          # Customer, Product, OnboardingSession
+│   ├── repositories/      # ICustomerRepository, IProductRepository
+│   └── services/          # ICustomerService, IOnboardingService
+├── application/
+│   └── use-cases/        # CreateCustomerUseCase, OnboardingUseCase
+├── infrastructure/
+│   ├── database/         # Models, connection, seeders
+│   ├── repositories/     # Repository implementations
+│   └── routes/           # API route handlers
+└── shared/
+    ├── middleware/       # Error handling, validation
+    └── utils/           # Logger, utilities
+```
+
+## Code Standards
+- **TypeScript**: Strict mode, no `any` types, explicit return types
+- **Error Handling**: Use CustomError class, proper HTTP status codes
+- **Validation**: Joi schemas for all inputs
+- **Logging**: Winston logger with structured logging
+- **Security**: Helmet, CORS, input sanitization
+
+## Common Patterns
+```typescript
+// Repository Interface
+interface ICustomerRepository {
+  findById(id: string): Promise<Customer | null>;
+  save(customer: Customer): Promise<Customer>;
+}
+
+// Use Case Implementation
+class CreateCustomerUseCase implements ICustomerService {
+  constructor(private customerRepository: ICustomerRepository) {}
+  
+  async createCustomer(request: CreateCustomerRequest): Promise<Customer> {
+    // Business logic implementation
+  }
+}
+
+// Error Handling
+throw new CustomError('Customer not found', 404);
+```
+
+## Database Patterns
+```typescript
+// Model Definition
+const CustomerSchema = new Schema<CustomerDocument>({
+  id: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: true },
+  // ... other fields
+});
+
+// Repository Implementation
+class CustomerRepository implements ICustomerRepository {
+  async findById(id: string): Promise<Customer | null> {
+    const customer = await CustomerModel.findOne({ id }).lean();
+    return customer ? this.mapToDomain(customer) : null;
+  }
+}
+```
+
+## API Response Format
+```typescript
+// Success Response
+{
+  "success": true,
+  "data": { /* actual data */ },
+  "pagination": { /* if applicable */ }
+}
+
+// Error Response
+{
+  "success": false,
+  "error": "Error message",
+  "statusCode": 400
+}
+```
+
+## Environment Variables
+- **PORT**: Server port (default: 3000)
+- **MONGODB_URI**: Database connection string
+- **JWT_SECRET**: JWT signing secret
+- **NODE_ENV**: Environment (development/production)
+- **LOG_LEVEL**: Logging level (info/debug/error)
+
+## Security
+- **Authentication**: JWT tokens with expiration
+- **Authorization**: Role-based access control
+- **Validation**: Input sanitization and validation
+- **CORS**: Configured for frontend domain
+- **Helmet**: Security headers
+
+## Performance
+- **Database**: Proper indexing and query optimization
+- **Caching**: Redis for frequently accessed data
+- **Connection Pooling**: MongoDB connection pooling
+- **Pagination**: Implement pagination for large datasets
+
+## Testing
+- **Unit Tests**: Business logic and utilities
+- **Integration Tests**: API endpoints and database
+- **Mocking**: Mock external dependencies
+- **Coverage**: Maintain 80%+ test coverage
+
+## Common Issues
+- **TypeScript Errors**: Use proper typing, avoid `any`
+- **Architecture Violations**: Follow clean architecture layers
+- **Database Performance**: Optimize queries and indexes
+- **Error Handling**: Use CustomError class consistently
+- **Validation**: Validate all inputs with Joi
+
+## Quick Commands
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run test         # Run tests
+npm run lint         # Run linting
+npm run lint:fix     # Fix linting issues
+```
+
+## AI Assistant Guidelines
+When helping with backend development:
+1. **Follow Clean Architecture**: Maintain layer separation
+2. **Use TypeScript**: Provide proper typing and interfaces
+3. **Implement SOLID**: Single responsibility, dependency inversion
+4. **Handle Errors**: Use CustomError class consistently
+5. **Validate Inputs**: Use Joi schemas for validation
+6. **Optimize Database**: Consider query performance and indexing
+7. **Write Tests**: Include unit and integration tests
+8. **Document APIs**: Add JSDoc comments for public methods
+9. **Consider Security**: Validate inputs, protect secrets
+10. **Plan for Scale**: Design for future growth and maintenance
+
+Remember: This backend serves a real business need and must handle production traffic. Always consider performance, security, and maintainability when making recommendations.

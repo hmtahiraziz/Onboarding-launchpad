@@ -1,0 +1,11 @@
+title,description,type,options,isRequired,order,description
+"What type of business do you operate?","Select the category that best describes your business","dropdown","Fine Dining Restaurant|Casual Restaurant|Bar/Pub|Hotel|Cafe|Nightclub|Catering Service|Retail Store|Other",true,1,"Business type selection"
+"How many employees do you have?","This helps us understand your business scale","radio","1-5 employees|6-20 employees|21-50 employees|51-100 employees|100+ employees",true,2,"Employee count"
+"What are your primary product categories?","Select all that apply","checkbox","Spirits (Whiskey, Vodka, Gin, etc.)|Wine (Red, White, Sparkling)|Beer (Craft, Import, Domestic)|Champagne & Sparkling Wine|Premium Spirits|Cocktail Mixers|Non-Alcoholic Beverages|Bar Accessories",true,3,"Product categories"
+"What is your typical price range per bottle?","Select the range that best fits your customer base","radio","Under $20|$20 - $50|$50 - $100|$100 - $200|$200+|Mixed range",true,4,"Price range"
+"What is your estimated monthly alcohol purchase volume?","This helps us recommend appropriate quantities","dropdown","Under $1,000|$1,000 - $5,000|$5,000 - $10,000|$10,000 - $25,000|$25,000 - $50,000|$50,000+",true,5,"Purchase volume"
+"What are your delivery preferences?","Select all that apply","checkbox","Standard delivery (3-5 business days)|Express delivery (1-2 business days)|Scheduled delivery|Pickup available|Bulk delivery discounts",false,6,"Delivery preferences"
+"How would you prefer to be contacted?","Select your preferred communication method","radio","Email|Phone|Text message|In-person meeting|Video call",true,7,"Contact preference"
+"What is your business name?","Enter your official business name","text","",true,8,"Business name"
+"What is your business address?","Enter your complete business address","textarea","",true,9,"Business address"
+"Do you have any special requirements or notes?","Any additional information that would help us serve you better","textarea","",false,10,"Special requirements"
